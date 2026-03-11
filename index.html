@@ -1,60 +1,54 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <title>VOXTOR</title>
-
 <style>
 
-/* СБРОС И ОСНОВНОЕ */
-
+/* СБРОС */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
-
 body{
     font-family:'Segoe UI', Arial, sans-serif;
-    background:#0a0f1c;
+    background:#0d0d1a;
     color:white;
 }
 
 /* HEADER */
-
 header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:20px 60px;
-    background:linear-gradient(90deg, #111827, #1f2937);
-    box-shadow:0 4px 10px rgba(0,0,0,0.5);
+    padding:20px 50px;
+    background:linear-gradient(90deg,#0f0f25,#1a1a36);
+    box-shadow:0 5px 15px rgba(0,0,0,0.5);
     position:sticky;
     top:0;
     z-index:100;
 }
-
 .logo{
-    font-size:32px;
+    font-size:36px;
     font-weight:bold;
+    color:#ff00ff;
     letter-spacing:4px;
-    color:#00ffcc;
 }
-
 nav a{
-    color:#cbd5e1;
     margin-left:30px;
     text-decoration:none;
-    font-size:16px;
+    color:#c0c0ff;
+    font-weight:bold;
     transition:0.3s;
 }
-
 nav a:hover{
-    color:#00ffcc;
+    color:#ff00ff;
+    transform:scale(1.05);
 }
 
 /* HERO */
-
 .hero{
     height:550px;
     display:flex;
@@ -62,183 +56,148 @@ nav a:hover{
     justify-content:center;
     align-items:center;
     text-align:center;
-    background:linear-gradient(180deg,#111827,#020617);
+    background:linear-gradient(180deg,#0d0d1a,#000010);
     position:relative;
+    overflow:hidden;
 }
-
-.hero::after{
-    content:'';
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0; left:0;
-    background:linear-gradient(180deg,rgba(0,0,0,0.3),rgba(0,0,0,0.7));
-}
-
 .hero h1{
     font-size:80px;
+    color:#ff00ff;
+    text-shadow:0 0 10px #ff00ff,0 0 20px #ff00ff;
     z-index:1;
-    color:#00ffcc;
 }
-
 .hero p{
     font-size:22px;
-    color:#94a3b8;
+    color:#a0a0ff;
     margin-top:15px;
     z-index:1;
 }
-
-/* BUTTONS */
-
 .buttons{
     margin-top:40px;
     z-index:1;
 }
-
 .btn{
-    padding:15px 40px;
+    padding:16px 45px;
     margin:10px;
-    text-decoration:none;
     font-weight:bold;
-    border-radius:10px;
+    border-radius:12px;
+    text-decoration:none;
     display:inline-block;
     transition:0.3s;
     font-size:16px;
-}
-
-.download{
-    background:#22c55e;
-    color:black;
-}
-
-.download:hover{
-    background:#16a34a;
-    transform:scale(1.1);
-}
-
-.discord{
-    background:#5865F2;
     color:white;
 }
-
+.download{
+    background:#00ffcc;
+}
+.download:hover{
+    background:#00e0b0;
+    transform:scale(1.1);
+}
+.discord{
+    background:#7289da;
+}
 .discord:hover{
-    background:#4752c4;
+    background:#5b6ea6;
     transform:scale(1.1);
 }
 
-/* SECTION */
-
+/* SECTIONS */
 .section{
-    padding:100px 50px;
+    padding:90px 50px;
     text-align:center;
 }
-
 .section h2{
-    font-size:40px;
+    font-size:42px;
     margin-bottom:60px;
-    color:#00ffcc;
+    color:#ff00ff;
+    text-shadow:0 0 5px #ff00ff;
 }
 
 /* CARDS */
-
 .cards{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
     gap:35px;
 }
-
 .card{
-    background:#111827;
+    background:#1a1a36;
     width:280px;
     padding:35px;
-    border-radius:15px;
+    border-radius:20px;
     transition:0.4s;
     cursor:pointer;
+    box-shadow:0 5px 20px rgba(255,0,255,0.2);
 }
-
 .card:hover{
     transform:translateY(-15px) scale(1.05);
-    background:#1f2937;
-    box-shadow:0 15px 25px rgba(0,0,0,0.6);
+    box-shadow:0 15px 40px rgba(255,0,255,0.5);
 }
-
 .card h3{
     margin-bottom:15px;
-    font-size:22px;
+    font-size:24px;
     color:#00ffcc;
 }
-
 .card p{
-    color:#a1a1a1;
+    color:#b0b0ff;
     font-size:16px;
     line-height:1.5;
 }
 
 /* TRAILER */
-
 .trailer iframe{
     border-radius:15px;
     transition:0.4s;
-    box-shadow:0 10px 20px rgba(0,0,0,0.5);
+    box-shadow:0 10px 30px rgba(255,0,255,0.4);
 }
-
 .trailer iframe:hover{
     transform:scale(1.03);
-    box-shadow:0 15px 30px rgba(0,0,0,0.7);
+    box-shadow:0 15px 50px rgba(255,0,255,0.6);
 }
 
 /* SCREENSHOTS */
-
 .screenshots{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
     gap:25px;
 }
-
 .screenshots img{
     width:320px;
     border-radius:15px;
     transition:0.4s;
     cursor:pointer;
-    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+    box-shadow:0 8px 25px rgba(255,0,255,0.3);
 }
-
 .screenshots img:hover{
     transform:scale(1.12);
-    box-shadow:0 18px 35px rgba(0,0,0,0.7);
-    filter: brightness(1.1);
+    box-shadow:0 18px 40px rgba(255,0,255,0.6);
+    filter:brightness(1.15);
 }
 
 /* FOOTER */
-
 footer{
-    background:#020617;
+    background:#000010;
     text-align:center;
     padding:50px;
-    color:#6b7280;
+    color:#a0a0ff;
 }
-
 footer a{
-    color:#5865F2;
+    color:#7289da;
     text-decoration:none;
     transition:0.3s;
 }
-
 footer a:hover{
-    color:#00ffcc;
+    color:#ff00ff;
 }
-
 </style>
 </head>
 
 <body>
 
 <header>
-
 <div class="logo">VOXTOR</div>
-
 <nav>
 <a href="#">Главная</a>
 <a href="#">О игре</a>
@@ -246,19 +205,15 @@ footer a:hover{
 <a href="#">Скачать</a>
 <a href="#">Discord</a>
 </nav>
-
 </header>
 
 <section class="hero">
-
 <h1>VOXTOR</h1>
 <p>Уничтожай монстров • собирай оружие • кастомизируй игру</p>
-
 <div class="buttons">
 <a class="btn download" href="#">Скачать игру</a>
 <a class="btn discord" href="https://discord.gg/">Discord сервер</a>
 </div>
-
 </section>
 
 <section class="section">
@@ -270,11 +225,11 @@ footer a:hover{
 </div>
 <div class="card">
 <h3>🎨 Граффити</h3>
-<p>Ставь граффити как в CS2.</p>
+<p>Ставь граффити и оставляй свой след на стенах.</p>
 </div>
 <div class="card">
 <h3>😂 Наклейки</h3>
-<p>Мемные наклейки для кастомизации.</p>
+<p>Смешные мемные наклейки для кастомизации оружия и персонажей.</p>
 </div>
 </div>
 </section>
@@ -304,3 +259,4 @@ VOXTOR © 2026
 
 </body>
 </html>
+```
