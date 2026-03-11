@@ -9,83 +9,134 @@
 
 body{
     margin:0;
-    font-family:Arial;
-    background:#0f0f0f;
+    font-family:Segoe UI, Arial;
+    background:#0b0f16;
     color:white;
-    text-align:center;
 }
+
+/* HEADER */
 
 header{
-    background:#111;
-    padding:30px;
-    font-size:40px;
-    font-weight:bold;
-    letter-spacing:4px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#111827;
+    padding:20px 60px;
 }
 
-nav{
-    background:#1b1b1b;
-    padding:15px;
+.logo{
+    font-size:32px;
+    font-weight:bold;
+    letter-spacing:3px;
 }
 
 nav a{
-    color:white;
-    margin:15px;
+    color:#cbd5e1;
+    margin-left:25px;
     text-decoration:none;
-    font-size:18px;
+    font-size:16px;
 }
 
 nav a:hover{
-    color:#00ffcc;
+    color:white;
 }
 
+/* HERO */
+
 .hero{
-    padding:120px 20px;
+    height:500px;
+    background:linear-gradient(180deg,#111827,#020617);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
 }
 
 .hero h1{
-    font-size:60px;
+    font-size:70px;
+    margin-bottom:10px;
 }
 
 .hero p{
+    color:#94a3b8;
     font-size:20px;
-    color:#aaa;
 }
 
-.button{
-    display:inline-block;
+/* BUTTONS */
+
+.buttons{
     margin-top:30px;
+}
+
+.btn{
     padding:15px 35px;
-    background:#00ffcc;
-    color:black;
+    margin:10px;
     text-decoration:none;
     font-weight:bold;
-    border-radius:10px;
+    border-radius:8px;
+    display:inline-block;
 }
 
-.section{
-    padding:80px 20px;
+.download{
+    background:#22c55e;
+    color:black;
 }
+
+.discord{
+    background:#5865F2;
+    color:white;
+}
+
+/* SECTION */
+
+.section{
+    padding:80px 40px;
+    text-align:center;
+}
+
+.section h2{
+    font-size:36px;
+    margin-bottom:50px;
+}
+
+/* CARDS */
 
 .cards{
     display:flex;
     justify-content:center;
-    gap:30px;
     flex-wrap:wrap;
+    gap:30px;
 }
 
 .card{
-    background:#1a1a1a;
-    padding:25px;
-    width:250px;
-    border-radius:10px;
+    background:#111827;
+    width:260px;
+    padding:30px;
+    border-radius:12px;
+    transition:0.3s;
 }
 
+.card:hover{
+    transform:translateY(-8px);
+    background:#1f2937;
+}
+
+.card h3{
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#9ca3af;
+}
+
+/* FOOTER */
+
 footer{
-    background:#111;
-    padding:30px;
-    margin-top:60px;
-    color:#777;
+    background:#020617;
+    text-align:center;
+    padding:40px;
+    color:#6b7280;
 }
 
 </style>
@@ -94,8 +145,8 @@ footer{
 <body>
 
 <header>
-VOXTOR
-</header>
+
+<div class="logo">VOXTOR</div>
 
 <nav>
 <a href="#">Главная</a>
@@ -105,11 +156,26 @@ VOXTOR
 <a href="#">Discord</a>
 </nav>
 
-<section class="hero">
-<h1>VOXTOR</h1>
-<p>Уничтожай монстров, собирай оружие и кастомизируй игру</p>
+</header>
 
-<a class="button" href="#">Скачать игру</a>
+<section class="hero">
+
+<h1>VOXTOR</h1>
+
+<p>Уничтожай монстров • собирай оружие • кастомизируй игру</p>
+
+<div class="buttons">
+
+<a class="btn download" href="#">
+Скачать игру
+</a>
+
+<a class="btn discord" href="https://discord.gg/">
+Discord сервер
+</a>
+
+</div>
+
 </section>
 
 <section class="section">
@@ -119,17 +185,17 @@ VOXTOR
 <div class="cards">
 
 <div class="card">
-<h3>Оружие</h3>
-<p>3+ видов оружия. Пистолет, автомат и дробовик.</p>
+<h3>🔫 Оружие</h3>
+<p>3+ видов оружия: пистолет, автомат и дробовик.</p>
 </div>
 
 <div class="card">
-<h3>Граффити</h3>
-<p>Можно ставить граффити как в CS2.</p>
+<h3>🎨 Граффити</h3>
+<p>Ставь граффити как в CS2.</p>
 </div>
 
 <div class="card">
-<h3>Наклейки</h3>
+<h3>😂 Наклейки</h3>
 <p>Мемные наклейки для кастомизации.</p>
 </div>
 
@@ -138,7 +204,13 @@ VOXTOR
 </section>
 
 <footer>
-VOXTOR © 2026
+
+VOXTOR © 2026  
+<br><br>
+<a style="color:#5865F2;text-decoration:none;" href="https://discord.gg/">
+Наш Discord
+</a>
+
 </footer>
 
 </body>
