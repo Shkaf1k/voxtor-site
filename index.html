@@ -2,21 +2,96 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>VOXTOR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOXTOR | PROJECT</title>
     <style>
-        body {
-            height: 100vh;
+        :root {
+            --neon: #00ff77;
+            --dark: #050505;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--dark);
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden; /* Убираем скролл для чистоты */
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #050505;
-            color: #444;
+        }
+
+        /* Эффект сетки на фоне */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 119, 0.03) 1px, transparent 1px),
+                linear-gradient(90px, rgba(0, 255, 119, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 5rem;
+            letter-spacing: 15px;
             margin: 0;
-            font-family: monospace;
+            color: var(--neon);
+            text-shadow: 0 0 20px rgba(0, 255, 119, 0.5);
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+
+        .status {
+            font-size: 14px;
+            color: #444;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .status span {
+            color: var(--neon);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Декоративная линия */
+        .line {
+            width: 50px;
+            height: 2px;
+            background: var(--neon);
+            margin: 20px auto;
+            box-shadow: 0 0 10px var(--neon);
         }
     </style>
 </head>
 <body>
-    <h1>VOXTOR: COMING SOON</h1>
+
+    <div class="container">
+        <div class="status">System: <span>Online</span></div>
+        <div class="line"></div>
+        <h1>VOXTOR</h1>
+        <div class="status">Waiting for input...</div>
+    </div>
+
 </body>
 </html>
