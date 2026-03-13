@@ -2,250 +2,290 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>VOXTOR</title>
+<title>VOXTOR - Официальный сайт игры (2009)</title>
 <style>
-/* СБРОС */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-    font-family:'Segoe UI', Arial, sans-serif;
-    background:#05050f;
-    color:white;
+/* СТИЛЬ 2009: Шрифты без засечек, повторяющийся фон */
+body {
+    margin: 0;
+    padding: 0;
+    background: #0b0b0b url('https://www.transparenttextures.com'); /* Текстура карбона */
+    font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+    color: #e0e0e0;
 }
 
-/* HEADER */
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 50px;
-    background:#0a0a1a;
-    box-shadow:0 5px 15px rgba(0,0,0,0.7);
-    position:sticky;
-    top:0;
-    z-index:100;
-}
-.logo{
-    font-size:36px;
-    font-weight:bold;
-    color:#00ff77;
-    letter-spacing:3px;
-}
-nav a{
-    margin-left:30px;
-    text-decoration:none;
-    color:#8888ff;
-    font-weight:bold;
-    transition:0.3s;
-}
-nav a:hover{
-    color:#00ff77;
-    transform:scale(1.05);
+/* ГЛАВНЫЙ КОНТЕЙНЕР (Фиксированная ширина была стандартом) */
+#wrapper {
+    width: 960px;
+    margin: 0 auto;
+    background: rgba(20, 20, 30, 0.95);
+    border-left: 3px solid #333;
+    border-right: 3px solid #333;
+    box-shadow: 0 0 20px #000;
 }
 
-/* HERO */
-.hero{
-    height:550px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    background:linear-gradient(180deg,#05050f,#000008);
-    position:relative;
-    overflow:hidden;
-}
-.hero h1{
-    font-size:80px;
-    color:#00ff77;
-    text-shadow:0 0 15px #00ff77,0 0 35px #00ff77;
-}
-.hero p{
-    font-size:22px;
-    color:#8888ff;
-    margin-top:15px;
-}
-.buttons{
-    margin-top:40px;
-}
-.btn{
-    padding:16px 45px;
-    margin:10px;
-    font-weight:bold;
-    border-radius:10px;
-    text-decoration:none;
-    display:inline-block;
-    transition:0.3s;
-    font-size:16px;
-    color:white;
-}
-.download{
-    background:#ff7a00;
-}
-.download:hover{
-    background:#ff5c00;
-    transform:scale(1.1);
-}
-.discord{
-    background:#5865f2;
-}
-.discord:hover{
-    background:#4752c4;
-    transform:scale(1.1);
+/* ШАПКА С ГЛЯНЦЕМ */
+header {
+    background: linear-gradient(to bottom, #222 0%, #111 50%, #000 51%, #111 100%);
+    padding: 30px 20px;
+    border-bottom: 2px solid #00ff77;
+    text-align: center;
 }
 
-/* SECTIONS */
-.section{
-    padding:90px 50px;
-    text-align:center;
-}
-.section h2{
-    font-size:42px;
-    margin-bottom:50px;
-    color:#00ff77;
+.logo {
+    font-size: 52px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0px #00ff77, 5px 5px 10px #000;
+    letter-spacing: -2px;
 }
 
-/* CARDS */
-.cards{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:35px;
-}
-.card{
-    background:#0c0c1f;
-    width:280px;
-    padding:30px;
-    border-radius:20px;
-    transition:0.4s;
-    cursor:pointer;
-    border:2px solid transparent;
-}
-.card:hover{
-    transform:translateY(-12px) scale(1.05);
-    border:2px solid #00ff77;
-    box-shadow:0 15px 30px rgba(0,255,119,0.3);
-}
-.card h3{
-    margin-bottom:15px;
-    font-size:24px;
-    color:#ff7a00;
-}
-.card p{
-    color:#8888ff;
-    font-size:16px;
-    line-height:1.5;
+/* НАВИГАЦИЯ (Кнопки с разделителями) */
+nav {
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+    text-align: center;
 }
 
-/* TRAILER */
-.trailer iframe{
-    border-radius:15px;
-    transition:0.4s;
-    border:2px solid #00ff77;
-}
-.trailer iframe:hover{
-    transform:scale(1.02);
-    border-color:#ff7a00;
-}
-
-/* SCREENSHOTS */
-.screenshots{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:25px;
-}
-.screenshots img{
-    width:300px;
-    border-radius:15px;
-    transition:0.4s;
-    cursor:pointer;
-    border:2px solid #00ff77;
-}
-.screenshots img:hover{
-    transform:scale(1.1);
-    border-color:#ff7a00;
-    box-shadow:0 15px 35px rgba(255,122,0,0.5);
+nav a {
+    display: inline-block;
+    padding: 12px 20px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    border-right: 1px solid #333;
+    text-transform: uppercase;
 }
 
-/* FOOTER */
-footer{
-    background:#000008;
-    text-align:center;
-    padding:50px;
-    color:#8888ff;
+nav a:hover {
+    background: #00ff77;
+    color: #000;
 }
-footer a{
-    color:#5865f2;
-    text-decoration:none;
-    transition:0.3s;
+
+/* ГЕЙМЕРСКИЙ БАННЕР */
+.hero {
+    height: 350px;
+    background: url('https://images.unsplash.com') center center;
+    background-size: cover;
+    border-bottom: 4px solid #00ff77;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
-footer a:hover{
-    color:#00ff77;
+
+.hero-overlay {
+    background: rgba(0,0,0,0.6);
+    padding: 20px;
+    border: 1px solid #00ff77;
+}
+
+/* КНОПКИ В СТИЛЕ "STEEL/GLASS" */
+.btn {
+    display: inline-block;
+    padding: 10px 25px;
+    margin: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+    border: 1px solid rgba(0,0,0,0.5);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.download {
+    background: linear-gradient(to bottom, #ff9900, #cc6600);
+}
+
+.download:hover {
+    background: linear-gradient(to bottom, #ffac2f, #e67300);
+}
+
+.discord {
+    background: linear-gradient(to bottom, #7289da, #4e5d94);
+}
+
+/* КОНТЕНТНАЯ ЧАСТЬ */
+.main-content {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+.sidebar {
+    width: 250px;
+}
+
+.content {
+    flex: 1;
+}
+
+/* БЛОКИ (WIDGETS) */
+.block {
+    background: #151515;
+    border: 1px solid #333;
+    margin-bottom: 20px;
+}
+
+.block-header {
+    background: #222;
+    padding: 8px 15px;
+    color: #00ff77;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    text-transform: uppercase;
+}
+
+.block-body {
+    padding: 15px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ТАБЛИЦА (Классика 2009) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table td {
+    padding: 8px;
+    border-bottom: 1px solid #222;
+}
+
+/* СКРИНШОТЫ */
+.thumb-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.thumb-grid img {
+    width: 100%;
+    border: 3px solid #333;
+    cursor: pointer;
+}
+
+.thumb-grid img:hover {
+    border-color: #00ff77;
+}
+
+/* ПОДВАЛ */
+footer {
+    background: #000;
+    padding: 30px;
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    border-top: 1px solid #333;
+}
+
+.online-counter {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 3px 10px;
+    background: #111;
+    border: 1px solid #333;
+    color: #00ff00;
 }
 </style>
 </head>
 <body>
 
-<header>
-<div class="logo">VOXTOR</div>
-<nav>
-<a href="#">Главная</a>
-<a href="#">О игре</a>
-<a href="#">Магазин</a>
-<a href="#">Скачать</a>
-<a href="#">Discord</a>
-</nav>
-</header>
+<div id="wrapper">
+    <header>
+        <div class="logo">VOXTOR ONLINE</div>
+    </header>
 
-<section class="hero">
-<h1>VOXTOR</h1>
-<p>Уничтожай монстров • собирай оружие • кастомизируй игру</p>
-<div class="buttons">
-<a class="btn download" href="#">Скачать игру</a>
-<a class="btn discord" href="https://discord.gg/">Discord сервер</a>
-</div>
-</section>
+    <nav>
+        <a href="#">Новости</a>
+        <a href="#">Регистрация</a>
+        <a href="#">Файлы</a>
+        <a href="#">Форум</a>
+        <a href="#">Топ игроков</a>
+        <a href="#">Поддержка</a>
+    </nav>
 
-<section class="section">
-<h2>Особенности игры</h2>
-<div class="cards">
-<div class="card">
-<h3>🔫 Оружие</h3>
-<p>3+ видов оружия: пистолет, автомат, дробовик.</p>
-</div>
-<div class="card">
-<h3>🎨 Граффити</h3>
-<p>Ставь граффити на стенах и оставляй свой след.</p>
-</div>
-<div class="card">
-<h3>😂 Наклейки</h3>
-<p>Мемные наклейки для кастомизации оружия и персонажей.</p>
-</div>
-</div>
-</section>
+    <section class="hero">
+        <div class="hero-overlay">
+            <h2 style="margin:0; font-size:24px;">НОВОЕ ОБНОВЛЕНИЕ 1.0.4</h2>
+            <p style="margin:10px 0;">Уже доступно для скачивания!</p>
+            <a href="#" class="btn download">СКАЧАТЬ КЛИЕНТ (420 МБ)</a>
+            <a href="#" class="btn discord">НАШ DISCORD</a>
+        </div>
+    </section>
 
-<section class="section">
-<h2>Трейлер</h2>
-<div class="trailer" style="display:flex; justify-content:center;">
-<iframe width="850" height="480" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="VOXTOR Trailer" frameborder="0" allowfullscreen></iframe>
-</div>
-</section>
+    <div class="main-content">
+        <!-- ЛЕВАЯ КОЛОНКА -->
+        <aside class="sidebar">
+            <div class="block">
+                <div class="block-header">Авторизация</div>
+                <div class="block-body">
+                    <input type="text" placeholder="Логин" style="width:100%; margin-bottom:5px; background:#000; border:1px solid #444; color:white; padding:3px;">
+                    <input type="password" placeholder="Пароль" style="width:100%; margin-bottom:10px; background:#000; border:1px solid #444; color:white; padding:3px;">
+                    <button style="width:100%; background:#333; color:white; border:1px solid #555; cursor:pointer; padding:5px;">Войти</button>
+                    <div style="font-size:10px; margin-top:5px; text-align:center;">
+                        <a href="#" style="color:#888;">Забыли пароль?</a> | <a href="#" style="color:#888;">Регистрация</a>
+                    </div>
+                </div>
+            </div>
 
-<section class="section">
-<h2>Скриншоты</h2>
-<div class="screenshots">
-<img src="screenshot1.png" alt="Скриншот 1">
-<img src="screenshot2.png" alt="Скриншот 2">
-<img src="screenshot3.png" alt="Скриншот 3">
-<img src="screenshot4.png" alt="Скриншот 4">
-</div>
-</section>
+            <div class="block">
+                <div class="block-header">Статистика</div>
+                <div class="block-body">
+                    <table>
+                        <tr><td>Сервер:</td><td style="color:#00ff00;">Online</td></tr>
+                        <tr><td>Игроков:</td><td>1,245</td></tr>
+                        <tr><td>Рекорд:</td><td>3,500</td></tr>
+                    </table>
+                </div>
+            </div>
+        </aside>
 
-<footer>
-VOXTOR © 2026  
-<br><br>
-<a href="https://discord.gg/">Наш Discord</a>
-</footer>
+        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА -->
+        <main class="content">
+            <div class="block">
+                <div class="block-header">Добро пожаловать в мир VOXTOR</div>
+                <div class="block-body">
+                    <p><strong>VOXTOR</strong> — это новый захватывающий шутер с элементами кастомизации. Уничтожай монстров, собирай редкое оружие и стань легендой нашего сервера!</p>
+                    <h4 style="color:#ff7a00;">Особенности проекта:</h4>
+                    <ul style="padding-left:20px;">
+                        <li>Арсенал из 3+ видов убойного оружия.</li>
+                        <li>Система граффити: пометь свою территорию!</li>
+                        <li>Мемные наклейки на пушки.</li>
+                        <li>Еженедельные ивенты от администрации.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="block">
+                <div class="block-header">Скриншоты игры</div>
+                <div class="block-body">
+                    <div class="thumb-grid">
+                        <img src="https://via.placeholder.com" alt="img">
+                        <img src="https://via.placeholder.com" alt="img">
+                        <img src="https://via.placeholder.com" alt="img">
+                        <img src="https://via.placeholder.com" alt="img">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        VOXTOR Project &copy; 2009 - 2026. Все права защищены. <br>
+        Использование материалов сайта без разрешения администрации запрещено.
+        <br>
+        <div class="online-counter">
+            <span style="color:#666;">Users Online:</span> 42
+        </div>
+    </footer>
+</div>
 
 </body>
 </html>
