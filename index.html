@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VOXTOR | PROJECT NEON</title>
-    <!-- Подключаем иконки и шрифты -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     
@@ -38,7 +37,6 @@
             letter-spacing: 2px;
         }
 
-        /* КРУТОЙ ФОН С СЕТКОЙ */
         .bg-grid {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -65,7 +63,6 @@
             100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
 
-        /* ШАПКА */
         header {
             display: flex;
             justify-content: space-between;
@@ -92,23 +89,12 @@
             margin-left: 30px;
             font-weight: 500;
             transition: 0.3s;
-            position: relative;
         }
 
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px; left: 0; width: 0; height: 2px;
-            background: var(--primary);
-            transition: 0.3s;
-        }
-
-        nav a:hover::after { width: 100%; }
         nav a:hover { color: var(--primary); }
 
-        /* ГЕРОЙ-СЕКЦИЯ */
         .hero {
-            height: 90vh;
+            height: 85vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -118,7 +104,7 @@
         }
 
         .hero h1 {
-            font-size: 80px;
+            font-size: clamp(40px, 8vw, 80px);
             margin-bottom: 10px;
             background: linear-gradient(90deg, #fff, var(--primary));
             -webkit-background-clip: text;
@@ -133,12 +119,6 @@
             margin-bottom: 40px;
         }
 
-        /* КНОПКИ */
-        .btn-group {
-            display: flex;
-            gap: 20px;
-        }
-
         .btn {
             padding: 15px 40px;
             border-radius: 5px;
@@ -147,75 +127,21 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary {
             background: var(--primary);
             color: #000;
             box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        .btn-primary:hover {
+        .btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 0 40px var(--primary);
         }
 
-        .btn-outline {
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: #000;
-        }
-
-        /* СЕКЦИЯ ОСОБЕННОСТЕЙ */
-        .features {
-            padding: 100px 10%;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            transition: 0.4s;
-            text-align: center;
-        }
-
-        .feature-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .feature-card i {
-            font-size: 40px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            margin-bottom: 15px;
-        }
-
-        /* ФУТЕР */
         footer {
             padding: 60px 10%;
             background: #040406;
             text-align: center;
             border-top: 1px solid rgba(0, 255, 136, 0.1);
-        }
-
-        .social-icons {
-            margin-bottom: 20px;
         }
 
         .social-icons a {
@@ -226,12 +152,6 @@
         }
 
         .social-icons a:hover { color: var(--primary); }
-
-        /* МОБИЛЬНОСТЬ */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 40px; }
-            nav { display: none; }
-        }
     </style>
 </head>
 <body>
@@ -241,74 +161,39 @@
     <header>
         <div class="logo">VOXTOR</div>
         <nav>
-            <a href="#home">Главная</a>
-            <a href="#features">Особенности</a>
-            <a href="#media">Медиа</a>
-            <a href="#shop">Магазин</a>
+            <a href="#">Главная</a>
+            <a href="#">Файлы</a>
+            <a href="#">Магазин</a>
+            <a href="#">Discord</a>
         </nav>
     </header>
 
-    <section class="hero" id="home">
-        <div class="status-tag" style="color: var(--primary); margin-bottom: 10px; font-weight: bold;">[ SERVER STATUS: ONLINE ]</div>
+    <section class="hero">
+        <div style="color: var(--primary); margin-bottom: 10px; font-weight: bold;">[ SERVER STATUS: ONLINE ]</div>
         <h1>EVOLUTION OF GAMING</h1>
-        <p>Погрузитесь в мир, где кастомизация не имеет границ. Собирайте арсенал, создавайте граффити и доминируйте на поле боя в новом измерении VOXTOR.</p>
-        
-        <div class="btn-group">
-            <a href="#" class="btn btn-primary">Скачать Лаунчер</a>
-            <a href="#" class="btn btn-outline">Вступить в Discord</a>
-        </div>
-    </section>
-
-    <section class="features" id="features">
-        <div class="feature-card">
-            <i class="fa-solid fa-gun"></i>
-            <h3>Арсенал 2.0</h3>
-            <p>Более 50 видов модификаций оружия. От классических пистолетов до экспериментальных плазмоидов.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-paint-roller"></i>
-            <h3>Творческая свобода</h3>
-            <p>Уникальная система граффити и мемных наклеек. Оставьте свой след на каждой стене города.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-microchip"></i>
-            <h3>Оптимизация</h3>
-            <p>Стабильные 144+ FPS даже на слабых системах благодаря нашему кастомному движку ядра.</p>
-        </div>
+        <p>Погрузитесь в мир, где кастомизация не имеет границ. Станьте легендой в новом измерении VOXTOR.</p>
+        <a href="#" class="btn">Скачать Лаунчер</a>
     </section>
 
     <section style="padding: 100px 10%; text-align: center;">
-        <h2 style="margin-bottom: 50px;">Активность сообщества</h2>
-        <div style="background: var(--card-bg); height: 400px; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--primary);">
+        <h2 style="margin-bottom: 50px;">Видео обзор</h2>
+        <div style="background: var(--card-bg); height: 450px; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
             <div style="text-align: center;">
                 <i class="fa-brands fa-youtube" style="font-size: 60px; color: #ff0000; margin-bottom: 20px;"></i>
                 <h3>Трейлер скоро появится</h3>
-                <p>Подпишитесь на уведомления, чтобы не пропустить премьеру.</p>
+                <p style="color: #666;">Следите за обновлениями в наших соцсетях.</p>
             </div>
         </div>
     </section>
 
     <footer>
-        <div class="social-icons">
+        <div class="social-icons" style="margin-bottom: 20px;">
             <a href="#"><i class="fa-brands fa-discord"></i></a>
-            <a href="#"><i class="fa-brands fa-telegram"></i></a>
             <a href="#"><i class="fa-brands fa-vk"></i></a>
             <a href="#"><i class="fa-brands fa-youtube"></i></a>
         </div>
         <p>&copy; 2026 VOXTOR PROJECT. Все права защищены.</p>
-        <p style="font-size: 12px; color: #444; margin-top: 10px;">Designed for the next generation of players.</p>
     </footer>
 
-    <script>
-        // Небольшой скрипт для плавного скролла
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
