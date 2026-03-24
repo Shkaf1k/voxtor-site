@@ -2,80 +2,66 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Unturned Web Edition</title>
+    <title>Unturned Web Fix</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #87CEEB; font-family: 'Courier New', Courier, monospace; user-select: none; }
+        body { margin: 0; overflow: hidden; background: #87CEEB; font-family: 'Segoe UI', sans-serif; user-select: none; }
         
-        /* ГЛАВНОЕ МЕНЮ */
-        #main-menu {
+        #main-menu, #settings-menu {
             position: absolute; width: 100%; height: 100%; z-index: 200;
             background: #4a6d34; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .menu-btn {
-            width: 280px; padding: 20px; margin: 10px; font-size: 24px; font-weight: bold;
-            background: #5e8a42; color: white; border: 4px solid #2e4521;
-            cursor: pointer; transition: 0.1s;
-        }
-        .menu-btn:hover { background: #76ad53; transform: scale(1.05); }
+        #settings-menu { display: none; background: #2e4521; }
 
-        /* HUD UNTURNED STYLE */
-        #hud { position: absolute; bottom: 20px; right: 20px; z-index: 50; color: white; text-align: right; }
-        .stat-box { background: rgba(0,0,0,0.5); padding: 10px; border: 3px solid #000; margin-bottom: 5px; width: 250px; }
-        .bar-bg { width: 100%; height: 12px; background: #333; margin-top: 5px; border: 1px solid #000; }
-        .bar-fill { height: 100%; width: 100%; transition: width 0.2s; }
+        .menu-btn {
+            width: 280px; padding: 15px; margin: 10px; font-size: 20px; font-weight: bold;
+            background: #5e8a42; color: white; border: 4px solid #1a2a12; cursor: pointer;
+        }
+
+        #hud { position: absolute; bottom: 20px; left: 20px; z-index: 50; color: white; }
+        .bar-bg { width: 200px; height: 15px; background: #333; border: 2px solid #000; margin-bottom: 10px; }
+        .bar-fill { height: 100%; width: 100%; transition: 0.2s; }
         
         #inventory-ui {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 700px; height: 450px; background: #2c2c2c; border: 5px solid #1a1a1a;
+            width: 500px; background: rgba(0,0,0,0.8); border: 3px solid #fff;
             display: none; z-index: 150; color: white; padding: 20px;
         }
-        .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
-        .item-slot { width: 80px; height: 80px; background: #444; border: 2px solid #666; display: flex; align-items: center; justify-content: center; font-size: 30px; }
-        
+
         .crosshair { 
-            position: absolute; top: 50%; left: 50%; width: 20px; height: 20px; 
-            border: 2px solid rgba(255,255,255,0.8); transform: translate(-50%, -50%); z-index: 10; 
+            position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; 
+            border: 2px solid white; transform: translate(-50%, -50%); z-index: 10; 
         }
-        #kill-feed { position: absolute; top: 20px; left: 20px; color: #ff4757; font-weight: bold; font-size: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="kill-feed"></div>
     <div class="crosshair"></div>
 
     <div id="main-menu">
-        <h1 style="color: white; font-size: 80px; -webkit-text-stroke: 3px #000;">UNTURNED WEB</h1>
+        <h1 style="color: white; font-size: 60px; margin-bottom: 40px;">UNTURNED</h1>
         <button class="menu-btn" onclick="startGame()">ИГРАТЬ</button>
-        <button class="menu-btn" onclick="toggleSettings(true)">НАСТРОЙКИ</button>
+        <button class="menu-btn" onclick="showSettings(true)">НАСТРОЙКИ</button>
+    </div>
+
+    <div id="settings-menu">
+        <h2 style="color: white;">НАСТРОЙКИ</h2>
+        <div style="color: white; margin-bottom: 20px;">
+            Чувствительность: <input type="range" id="sens-input" min="1" max="50" value="20"><br><br>
+            Дальность (Fog): <input type="range" id="fog-input" min="20" max="200" value="100">
+        </div>
+        <button class="menu-btn" onclick="showSettings(false)">НАЗАД</button>
     </div>
 
     <div id="inventory-ui">
-        <h2 style="border-bottom: 2px solid #5e8a42;">СНАРЯЖЕНИЕ</h2>
-        <div style="display: flex; gap: 30px;">
-            <div class="grid" id="inv-grid">
-                </div>
-            <div style="background: #1a1a1a; padding: 15px; flex: 1;">
-                <h3>КРАФТ</h3>
-                <button onclick="craft('bandage')" style="width:100%; margin-bottom:5px;">Бинт (2 Ткани)</button>
-                <button onclick="craft('base')" style="width:100%;">Стена (5 Дерева)</button>
-            </div>
-        </div>
-        <p>Нажми 'I' чтобы закрыть</p>
+        <h2>ИНВЕНТАРЬ (I)</h2>
+        <div id="inv-items">🪵 Дерево: <span id="wood-count">0</span></div>
+        <hr>
+        <button onclick="craftWall()" style="padding: 10px; cursor: pointer;">Создать стену (3 дерева)</button>
     </div>
 
     <div id="hud">
-        <div class="stat-box">
-            ЗДОРОВЬЕ
-            <div class="bar-bg"><div id="hp-bar" class="bar-fill" style="background: #ff4757;"></div></div>
-        </div>
-        <div class="stat-box">
-            СЫТОСТЬ
-            <div class="bar-bg"><div id="food-bar" class="bar-fill" style="background: #ffa502;"></div></div>
-        </div>
-        <div class="stat-box">
-            ОПЫТ: <span id="xp-val">0</span>
-        </div>
+        HP <div class="bar-bg"><div id="hp-bar" class="bar-fill" style="background: #ff4757;"></div></div>
+        ЕДА <div class="bar-bg"><div id="food-bar" class="bar-fill" style="background: #ffa502;"></div></div>
     </div>
 
     <script type="importmap">
@@ -86,166 +72,122 @@
         import * as THREE from 'three';
         import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 
-        // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
-        let gameActive = false;
-        let stats = { hp: 100, food: 100, xp: 0 };
-        let inventory = ["🪓", "🔫"];
-        let zombies = [];
-        const objects = [];
-
+        // --- ДВИЖОК ---
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x87CEEB);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: false }); // Отключаем сглаживание для стиля Unturned
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
         document.body.appendChild(renderer.domElement);
 
+        // --- СВЕТ (Чтобы не было черным) ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.0); // Общий свет
+        scene.add(ambientLight);
+        const sunLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        sunLight.position.set(5, 10, 7);
+        scene.add(sunLight);
+
         const controls = new PointerLockControls(camera, document.body);
+        let gameActive = false;
+        let wood = 0;
+        let hp = 100;
+        let food = 100;
 
-        // --- МОДЕЛЬ РУК (ОРУЖИЕ) ---
-        const gunGroup = new THREE.Group();
-        const hand = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.5), new THREE.MeshStandardMaterial({color: 0xdbac82}));
-        const pistol = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.25, 0.4), new THREE.MeshStandardMaterial({color: 0x333333}));
-        pistol.position.set(0.2, -0.2, -0.5);
-        hand.position.set(0.2, -0.2, -0.3);
-        gunGroup.add(hand, pistol);
-        camera.add(gunGroup);
-        scene.add(camera);
-
-        // --- МИР ---
-        // Земля
-        const ground = new THREE.Mesh(new THREE.PlaneGeometry(500, 500), new THREE.MeshStandardMaterial({ color: 0x4a6d34 }));
-        ground.rotation.x = -Math.PI/2; ground.receiveShadow = true;
+        // --- ОБЪЕКТЫ ---
+        const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: 0x5e8a42 }));
+        ground.rotation.x = -Math.PI/2;
         scene.add(ground);
 
-        // Деревья (кубические)
-        function createBlockyTree(x, z) {
-            const tree = new THREE.Group();
-            const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.8, 4, 0.8), new THREE.MeshStandardMaterial({color: 0x4b3621}));
-            const leaves = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshStandardMaterial({color: 0x3a5f25}));
-            trunk.position.y = 2; leaves.position.y = 4.5;
-            tree.add(trunk, leaves); tree.position.set(x, 0, z);
-            scene.add(tree);
+        // Деревья
+        const trees = [];
+        function spawnTree(x, z) {
+            const group = new THREE.Group();
+            const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.5, 3, 0.5), new THREE.MeshStandardMaterial({color: 0x4b3621}));
+            const top = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2), new THREE.MeshStandardMaterial({color: 0x2e4521}));
+            trunk.position.y = 1.5; top.position.y = 3.5;
+            group.add(trunk, top); group.position.set(x, 0, z);
+            scene.add(group);
+            trees.push(group);
         }
-        for(let i=0; i<40; i++) createBlockyTree(Math.random()*200-100, Math.random()*200-100);
+        for(let i=0; i<30; i++) spawnTree(Math.random()*100-50, Math.random()*100-50);
 
-        // --- ЗОМБИ ---
-        function spawnZombie() {
-            const zomb = new THREE.Group();
-            const body = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.8, 0.5), new THREE.MeshStandardMaterial({color: 0x455a3f}));
-            const head = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.6, 0.6), new THREE.MeshStandardMaterial({color: 0x7a9c6d}));
-            head.position.y = 1.2;
-            zomb.add(body, head);
-            zomb.position.set(Math.random()*100-50, 0.9, Math.random()*100-50);
-            scene.add(zomb);
-            zombies.push({ mesh: zomb, hp: 100 });
-        }
-        for(let i=0; i<10; i++) spawnZombie();
+        // Рука/Оружие
+        const hand = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.8), new THREE.MeshStandardMaterial({color: 0xdbac82}));
+        hand.position.set(0.5, -0.4, -0.6);
+        camera.add(hand);
+        scene.add(camera);
 
-        // --- УПРАВЛЕНИЕ ---
+        // --- ФУНКЦИИ ИНТЕРФЕЙСА ---
         window.startGame = () => {
             document.getElementById('main-menu').style.display = 'none';
             controls.lock();
             gameActive = true;
         };
 
+        window.showSettings = (val) => {
+            document.getElementById('settings-menu').style.display = val ? 'flex' : 'none';
+        };
+
+        window.craftWall = () => {
+            if(wood >= 3) {
+                wood -= 3;
+                document.getElementById('wood-count').innerText = wood;
+                const wall = new THREE.Mesh(new THREE.BoxGeometry(4, 2, 0.5), new THREE.MeshStandardMaterial({color: 0x4b3621}));
+                const dir = new THREE.Vector3(); camera.getWorldDirection(dir);
+                wall.position.addVectors(camera.position, dir.multiplyScalar(4));
+                wall.position.y = 1;
+                wall.rotation.y = camera.rotation.y;
+                scene.add(wall);
+            }
+        };
+
+        // --- ЛОГИКА ---
         const keys = {};
         document.addEventListener('keydown', (e) => {
             keys[e.code] = true;
-            if(e.code === 'KeyI' && gameActive) toggleInv();
+            if(e.code === 'KeyI' && gameActive) {
+                const inv = document.getElementById('inventory-ui');
+                if(inv.style.display === 'block') { inv.style.display = 'none'; controls.lock(); }
+                else { inv.style.display = 'block'; controls.unlock(); }
+            }
+            if(e.code === 'KeyE' && gameActive) {
+                // Добыча дерева (если рядом)
+                trees.forEach(t => {
+                    if(camera.position.distanceTo(t.position) < 4) {
+                        wood++;
+                        document.getElementById('wood-count').innerText = wood;
+                    }
+                });
+            }
         });
         document.addEventListener('keyup', (e) => keys[e.code] = false);
 
-        function toggleInv() {
-            const ui = document.getElementById('inventory-ui');
-            if(ui.style.display === 'block') {
-                ui.style.display = 'none'; controls.lock();
-            } else {
-                ui.style.display = 'block'; controls.unlock();
-                renderInv();
-            }
-        }
-
-        function renderInv() {
-            const grid = document.getElementById('inv-grid');
-            grid.innerHTML = '';
-            inventory.forEach(item => {
-                grid.innerHTML += `<div class="item-slot">${item}</div>`;
-            });
-        }
-
-        // Стрельба / Удар
-        document.addEventListener('mousedown', () => {
-            if(!controls.isLocked) return;
-            
-            // Анимация отдачи
-            gunGroup.position.z = 0.1;
-            setTimeout(() => gunGroup.position.z = 0, 100);
-
-            // Проверка попадания
-            const raycaster = new THREE.Raycaster();
-            raycaster.setFromCamera(new THREE.Vector2(), camera);
-            const intersects = raycaster.intersectObjects(zombies.map(z => z.mesh), true);
-
-            if(intersects.length > 0) {
-                const hitObj = intersects[0].object.parent;
-                const zIndex = zombies.findIndex(z => z.mesh === hitObj);
-                if(zIndex !== -1) {
-                    zombies[zIndex].hp -= 50;
-                    if(zombies[zIndex].hp <= 0) {
-                        scene.remove(zombies[zIndex].mesh);
-                        zombies.splice(zIndex, 1);
-                        stats.xp += 20;
-                        document.getElementById('kill-feed').innerText = "ЗОМБИ УБИТ +20 XP";
-                        setTimeout(() => document.getElementById('kill-feed').innerText = "", 2000);
-                        spawnZombie();
-                    }
-                }
-            }
-        });
-
-        // --- ЛОГИКА ---
         function animate() {
             requestAnimationFrame(animate);
             if(gameActive && controls.isLocked) {
-                const speed = 0.15;
+                // Движение
+                const speed = 0.12;
                 if(keys['KeyW']) controls.moveForward(speed);
                 if(keys['KeyS']) controls.moveForward(-speed);
                 if(keys['KeyA']) controls.moveRight(-speed);
                 if(keys['KeyD']) controls.moveRight(speed);
 
-                // Движение зомби к игроку
-                zombies.forEach(z => {
-                    const dir = new THREE.Vector3().subVectors(camera.position, z.mesh.position).normalize();
-                    z.mesh.position.x += dir.x * 0.04;
-                    z.mesh.position.z += dir.z * 0.04;
-                    z.mesh.lookAt(camera.position.x, 0.9, camera.position.z);
+                // Статы
+                food -= 0.005;
+                if(food <= 0) hp -= 0.01;
+                document.getElementById('hp-bar').style.width = hp + '%';
+                document.getElementById('food-bar').style.width = food + '%';
 
-                    // Урон от зомби
-                    if(z.mesh.position.distanceTo(camera.position) < 1.5) {
-                        stats.hp -= 0.1;
-                    }
-                });
-
-                // Покачивание оружия при ходьбе
-                if(keys['KeyW'] || keys['KeyS'] || keys['KeyA'] || keys['KeyD']) {
-                    gunGroup.position.y = -0.05 + Math.sin(Date.now() * 0.01) * 0.02;
-                }
-
-                stats.food -= 0.005;
-                document.getElementById('hp-bar').style.width = stats.hp + '%';
-                document.getElementById('food-bar').style.width = stats.food + '%';
-                document.getElementById('xp-val').innerText = stats.xp;
-
-                if(stats.hp <= 0) {
-                    alert("ВЫ ПОГИБЛИ! ОПЫТ: " + stats.xp);
-                    location.reload();
-                }
+                // Применяем настройки
+                const sens = document.getElementById('sens-input').value / 1000;
+                controls.pointerSpeed = sens * 10;
+                
+                const fogDist = document.getElementById('fog-input').value;
+                scene.fog = new THREE.Fog(0x87CEEB, 1, fogDist);
             }
             renderer.render(scene, camera);
         }
-
+        
         camera.position.y = 1.6;
         animate();
 
