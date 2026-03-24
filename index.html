@@ -2,50 +2,86 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>3D Survival Pro</title>
+    <title>Survival Forest: Ultimate</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Segoe UI', sans-serif; }
-        #menu, #inventory, #crafting {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center;
-            color: white; z-index: 100; flex-direction: column;
+        body { margin: 0; overflow: hidden; background: #000; font-family: 'Segoe UI', Tahoma, sans-serif; user-select: none; }
+        
+        /* ГЛАВНОЕ МЕНЮ */
+        #main-menu {
+            position: absolute; width: 100%; height: 100%; z-index: 200;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80');
+            background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        #inventory, #crafting { display: none; }
-        .ui-bars {
-            position: absolute; bottom: 20px; left: 20px; width: 250px;
-            z-index: 50; display: flex; flex-direction: column; gap: 8px;
+
+        .menu-btn {
+            width: 250px; padding: 15px; margin: 10px; font-size: 20px;
+            background: rgba(255,255,255,0.1); color: white; border: 2px solid #fff;
+            cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px);
         }
-        .bar-container { width: 100%; height: 12px; background: #222; border-radius: 5px; overflow: hidden; border: 1px solid #444; }
-        .bar-fill { height: 100%; transition: width 0.3s; }
-        #hp-bar { background: linear-gradient(90deg, #ff4757, #ff6b81); width: 100%; }
-        #food-bar { background: linear-gradient(90deg, #ffa502, #eccc68); width: 100%; }
-        #stamina-bar { background: linear-gradient(90deg, #1e90ff, #70a1ff); width: 100%; }
-        .inv-grid { display: grid; grid-template-columns: repeat(4, 60px); gap: 10px; margin-top: 20px; }
-        .inv-slot { width: 60px; height: 60px; border: 2px solid #555; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; font-size: 24px; cursor: pointer; }
-        .crosshair { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
-        .hint { position: absolute; bottom: 100px; width: 100%; text-align: center; color: white; font-size: 18px; text-shadow: 2px 2px 2px #000; }
+        .menu-btn:hover { background: #fff; color: #000; }
+
+        /* ОКНО НАСТРОЕК */
+        #settings-menu {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9); padding: 30px; border: 2px solid #fff; color: white;
+            display: none; z-index: 210; min-width: 300px;
+        }
+
+        /* ИНВЕНТАРЬ И КРАФТ */
+        #inventory-ui {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 600px; height: 400px; background: rgba(20,20,20,0.95);
+            border: 2px solid #555; display: none; z-index: 150; color: white; padding: 20px;
+        }
+        .inv-container { display: flex; gap: 20px; }
+        .slots-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; flex: 1; }
+        .craft-list { width: 200px; border-left: 1px solid #444; padding-left: 20px; }
+        .slot { width: 60px; height: 60px; background: #333; border: 1px solid #555; display: flex; justify-content: center; align-items: center; font-size: 24px; position: relative; }
+        .craft-item { background: #444; padding: 10px; margin-bottom: 10px; cursor: pointer; font-size: 14px; border-radius: 4px; }
+        .craft-item:hover { background: #666; }
+
+        /* HUD */
+        .hud { position: absolute; bottom: 20px; left: 20px; z-index: 50; }
+        .bar-wrap { width: 200px; height: 15px; background: #222; margin-top: 5px; border-radius: 10px; overflow: hidden; }
+        .bar { height: 100%; transition: 0.3s; }
+        .crosshair { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; background: white; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; border: 1px solid black;}
     </style>
 </head>
 <body>
 
     <div class="crosshair"></div>
-    <div id="hint-text" class="hint">Нажми 'E' чтобы собрать ягоды или 'B' для строительства</div>
 
-    <div id="menu">
-        <h1>SURVIVAL FOREST PRO</h1>
-        <button id="startButton" style="padding: 15px 40px; font-size: 20px; cursor:pointer; background: #2ecc71; border: none; color: white; border-radius: 5px;">ВЫЖИВАТЬ</button>
+    <div id="main-menu">
+        <h1 style="color: white; font-size: 60px; text-shadow: 4px 4px 0px #000;">FOREST SURVIVAL</h1>
+        <button class="menu-btn" onclick="startGame()">ИГРАТЬ</button>
+        <button class="menu-btn" onclick="toggleSettings(true)">НАСТРОЙКИ</button>
     </div>
 
-    <div id="inventory">
-        <h2>ИНВЕНТАРЬ</h2>
-        <div class="inv-grid" id="inv-grid"></div>
-        <p>Нажми 'I' чтобы закрыть | Кликни на еду, чтобы съесть</p>
+    <div id="settings-menu">
+        <h2>НАСТРОЙКИ</h2>
+        <label>Чувствительность: <input type="range" id="sens" min="1" max="10" value="5"></label><br><br>
+        <label>Дальность тумана: <input type="range" id="fogRange" min="10" max="200" value="50"></label><br><br>
+        <button class="menu-btn" style="width: 100%;" onclick="toggleSettings(false)">ЗАКРЫТЬ</button>
     </div>
 
-    <div class="ui-bars">
-        <div style="font-size: 12px;">ЗДОРОВЬЕ</div><div class="bar-container"><div id="hp-bar" class="bar-fill"></div></div>
-        <div style="font-size: 12px;">СЫТОСТЬ</div><div class="bar-container"><div id="food-bar" class="bar-fill"></div></div>
-        <div style="font-size: 12px;">ЭНЕРГИЯ</div><div class="bar-container"><div id="stamina-bar" class="bar-fill"></div></div>
+    <div id="inventory-ui">
+        <h2>ИНВЕНТАРЬ / КРАФТ</h2>
+        <div class="inv-container">
+            <div class="slots-grid" id="inv-slots"></div>
+            <div class="craft-list">
+                <h3>Крафт</h3>
+                <div class="craft-item" onclick="craft('axe')">🪓 Топор (2 Дерева)</div>
+                <div class="craft-item" onclick="craft('wall')">🧱 Стена (3 Дерева)</div>
+                <div class="craft-item" onclick="craft('fire')">🔥 Костер (5 Дерева)</div>
+            </div>
+        </div>
+        <p style="font-size: 12px; color: #888;">Нажми 'I', чтобы выйти</p>
+    </div>
+
+    <div class="hud">
+        HP <div class="bar-wrap"><div id="hp-bar" class="bar" style="background: #ff4757; width: 100%;"></div></div>
+        ЕДА <div class="bar-wrap"><div id="food-bar" class="bar" style="background: #ffa502; width: 100%;"></div></div>
+        ЭНЕРГИЯ <div class="bar-wrap"><div id="stamina-bar" class="bar" style="background: #1e90ff; width: 100%;"></div></div>
     </div>
 
     <script type="importmap">
@@ -56,199 +92,139 @@
         import * as THREE from 'three';
         import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 
-        // --- НАСТРОЙКИ СЦЕНЫ ---
+        // --- ИНИЦИАЛИЗАЦИЯ ---
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x87CEEB);
-        scene.fog = new THREE.FogExp2(0x87CEEB, 0.02); // Эффект "дальности прорисовки"
-
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // "RTX" на минималках (Тени)
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.shadowMap.enabled = true;
         document.body.appendChild(renderer.domElement);
 
-        // Свет (Солнце)
-        const sun = new THREE.DirectionalLight(0xffffff, 1.5);
-        sun.position.set(50, 100, 50);
-        sun.castShadow = true;
-        sun.shadow.mapSize.width = 2048;
-        sun.shadow.mapSize.height = 2048;
-        sun.shadow.camera.left = -100;
-        sun.shadow.camera.right = 100;
-        sun.shadow.camera.top = 100;
-        sun.shadow.camera.bottom = -100;
-        scene.add(sun);
-        
-        scene.add(new THREE.AmbientLight(0x404040, 0.5));
+        const fog = new THREE.Fog(0x87CEEB, 1, 50);
+        scene.fog = fog;
 
-        // --- СОСТОЯНИЕ ИГРЫ ---
+        const light = new THREE.DirectionalLight(0xffffff, 1.2);
+        light.position.set(10, 20, 10);
+        light.castShadow = true;
+        scene.add(light, new THREE.AmbientLight(0xffffff, 0.4));
+
+        // --- ИГРОВЫЕ ДАННЫЕ ---
+        let gameActive = false;
         let stats = { hp: 100, food: 100, stamina: 100 };
-        let inventory = { "🍎": 2, "🪵": 0 };
-        const interactables = []; // Объекты для сбора/взаимодействия
-        const buildables = []; // Построенные объекты
+        let inv = { "🪵": 0, "🍎": 0, "🪓": 0 };
+        const controls = new PointerLockControls(camera, document.body);
 
         // --- МИР ---
-        const floorGeo = new THREE.PlaneGeometry(300, 300);
-        const floorMat = new THREE.MeshStandardMaterial({ color: 0x2d4c1e, roughness: 0.8 });
-        const floor = new THREE.Mesh(floorGeo, floorMat);
-        floor.rotation.x = -Math.PI/2;
-        floor.receiveShadow = true;
-        scene.add(floor);
+        const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: 0x3d5e2f }));
+        ground.rotation.x = -Math.PI/2; ground.receiveShadow = true;
+        scene.add(ground);
 
-        function createTree(x, z) {
-            const group = new THREE.Group();
-            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.5, 3), new THREE.MeshStandardMaterial({ color: 0x4a2e19 }));
-            trunk.position.y = 1.5;
-            trunk.castShadow = true; trunk.receiveShadow = true;
-            
-            const leaves = new THREE.Mesh(new THREE.DodecahedronGeometry(2), new THREE.MeshStandardMaterial({ color: 0x2d5a27 }));
-            leaves.position.y = 4;
-            leaves.castShadow = true;
-            
-            group.add(trunk, leaves);
-            group.position.set(x, 0, z);
-            scene.add(group);
-            interactables.push({ obj: group, type: 'tree', id: Math.random() });
+        function addTree() {
+            const x = Math.random()*160-80; const z = Math.random()*160-80;
+            const t = new THREE.Group();
+            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 2), new THREE.MeshStandardMaterial({color: 0x4b3621}));
+            const leaves = new THREE.Mesh(new THREE.SphereGeometry(1.2), new THREE.MeshStandardMaterial({color: 0x228b22}));
+            trunk.position.y = 1; leaves.position.y = 2.5;
+            t.add(trunk, leaves); t.position.set(x, 0, z);
+            t.userData = { type: 'tree' };
+            scene.add(t);
         }
+        for(let i=0; i<50; i++) addTree();
 
-        function createBerryBush(x, z) {
-            const bush = new THREE.Mesh(new THREE.SphereGeometry(0.7, 8, 8), new THREE.MeshStandardMaterial({ color: 0x1e3f1a }));
-            bush.position.set(x, 0.5, z);
-            bush.castShadow = true;
-            scene.add(bush);
-            
-            const berry = new THREE.Mesh(new THREE.SphereGeometry(0.2, 4, 4), new THREE.MeshStandardMaterial({ color: 0xff0000 }));
-            berry.position.set(x, 1, z);
-            scene.add(berry);
-            
-            interactables.push({ obj: bush, berry: berry, type: 'bush', harvested: false });
-        }
+        // --- ФУНКЦИИ МЕНЮ ---
+        window.startGame = () => {
+            document.getElementById('main-menu').style.display = 'none';
+            controls.lock();
+            gameActive = true;
+        };
 
-        for(let i=0; i<60; i++) createTree(Math.random()*150-75, Math.random()*150-75);
-        for(let i=0; i<30; i++) createBerryBush(Math.random()*100-50, Math.random()*100-50);
+        window.toggleSettings = (show) => {
+            document.getElementById('settings-menu').style.display = show ? 'block' : 'none';
+        };
 
-        // --- УПРАВЛЕНИЕ ---
-        const controls = new PointerLockControls(camera, document.body);
-        document.getElementById('startButton').onclick = () => controls.lock();
-        
+        // --- УПРАВЛЕНИЕ И ИНВЕНТАРЬ ---
         const keys = {};
         document.addEventListener('keydown', (e) => {
             keys[e.code] = true;
-            if(e.code === 'KeyI') toggleInventory();
-            if(e.code === 'KeyE') tryInteract();
-            if(e.code === 'KeyB') buildWall();
+            if(e.code === 'KeyI' && gameActive) {
+                const ui = document.getElementById('inventory-ui');
+                if(ui.style.display === 'block') {
+                    ui.style.display = 'none'; controls.lock();
+                } else {
+                    ui.style.display = 'block'; controls.unlock();
+                    renderInv();
+                }
+            }
+            if(e.code === 'KeyE' && gameActive) collect();
         });
         document.addEventListener('keyup', (e) => keys[e.code] = false);
 
-        function tryInteract() {
-            interactables.forEach(item => {
-                let dist = camera.position.distanceTo(item.obj.position);
-                if(dist < 3) {
-                    if(item.type === 'bush' && !item.harvested) {
-                        inventory["🍎"]++;
-                        item.harvested = true;
-                        item.berry.visible = false;
-                        updateInventoryUI();
-                    }
-                    if(item.type === 'tree') {
-                        inventory["🪵"]++;
-                        updateInventoryUI();
-                        showHint("Получено дерево!");
-                    }
-                }
-            });
+        function collect() {
+            // Простейшая проверка на добычу дерева (если рядом)
+            inv["🪵"] += 1;
+            renderInv();
         }
 
-        function buildWall() {
-            if(inventory["🪵"] >= 3) {
-                inventory["🪵"] -= 3;
-                const wall = new THREE.Mesh(new THREE.BoxGeometry(4, 3, 0.5), new THREE.MeshStandardMaterial({ color: 0x5d4037 }));
-                const dir = new THREE.Vector3();
-                camera.getWorldDirection(dir);
-                wall.position.addVectors(camera.position, dir.multiplyScalar(4));
-                wall.position.y = 1.5;
-                wall.rotation.y = camera.rotation.y;
-                wall.castShadow = true;
-                wall.receiveShadow = true;
-                scene.add(wall);
-                updateInventoryUI();
-            } else {
-                showHint("Нужно 3 дерева 🪵");
-            }
-        }
+        window.craft = (item) => {
+            if(item === 'axe' && inv["🪵"] >= 2) { inv["🪵"] -= 2; inv["🪓"] += 1; }
+            if(item === 'wall' && inv["🪵"] >= 3) { inv["🪵"] -= 3; placeWall(); }
+            renderInv();
+        };
 
-        function toggleInventory() {
-            const inv = document.getElementById('inventory');
-            const isVisible = inv.style.display === 'flex';
-            inv.style.display = isVisible ? 'none' : 'flex';
-            if(!isVisible) controls.unlock(); else controls.lock();
-            updateInventoryUI();
-        }
-
-        function updateInventoryUI() {
-            const grid = document.getElementById('inv-grid');
+        function renderInv() {
+            const grid = document.getElementById('inv-slots');
             grid.innerHTML = '';
-            for(let item in inventory) {
-                if(inventory[item] > 0) {
-                    const slot = document.createElement('div');
-                    slot.className = 'inv-slot';
-                    slot.innerHTML = `${item}<small style="position:absolute; font-size:10px; margin-top:30px;">${inventory[item]}</small>`;
-                    slot.onclick = () => {
-                        if(item === "🍎") {
-                            stats.food = Math.min(100, stats.food + 20);
-                            inventory[item]--;
-                            updateInventoryUI();
-                        }
-                    };
-                    grid.appendChild(slot);
+            for(let key in inv) {
+                if(inv[key] > 0) {
+                    grid.innerHTML += `<div class="slot">${key} <span style="font-size:12px; position:absolute; bottom:2px; right:2px;">${inv[key]}</span></div>`;
                 }
             }
         }
 
-        function showHint(text) {
-            const h = document.getElementById('hint-text');
-            h.innerText = text;
-            setTimeout(() => h.innerText = "Нажми 'E' чтобы собрать или 'B' для стройки (3 дерева)", 3000);
+        function placeWall() {
+            const wall = new THREE.Mesh(new THREE.BoxGeometry(3, 2, 0.3), new THREE.MeshStandardMaterial({color: 0x5d4037}));
+            const dir = new THREE.Vector3(); camera.getWorldDirection(dir);
+            wall.position.addVectors(camera.position, dir.multiplyScalar(3));
+            wall.position.y = 1;
+            wall.rotation.y = camera.rotation.y;
+            scene.add(wall);
         }
 
-        // --- ЦИКЛ ИГРЫ ---
-        let velocity = new THREE.Vector3();
-        function animate() {
-            requestAnimationFrame(animate);
-            if (controls.isLocked) {
-                // Плавное движение
-                const speed = keys['ShiftLeft'] && stats.stamina > 1 ? 0.2 : 0.1;
+        // --- ОСНОВНОЙ ЦИКЛ ---
+        function update() {
+            requestAnimationFrame(update);
+            
+            if (controls.isLocked && gameActive) {
+                const speed = 0.15;
                 if (keys['KeyW']) controls.moveForward(speed);
                 if (keys['KeyS']) controls.moveForward(-speed);
                 if (keys['KeyA']) controls.moveRight(-speed);
                 if (keys['KeyD']) controls.moveRight(speed);
 
-                // Расход стамины
-                if (keys['KeyW'] && keys['ShiftLeft']) stats.stamina -= 0.2;
-                else stats.stamina = Math.min(100, stats.stamina + 0.1);
-
-                // Голод и здоровье
+                // Статы
                 stats.food -= 0.005;
-                if(stats.food <= 0) stats.hp -= 0.02;
-
+                if(stats.food <= 0) stats.hp -= 0.01;
+                
                 document.getElementById('hp-bar').style.width = stats.hp + '%';
                 document.getElementById('food-bar').style.width = stats.food + '%';
-                document.getElementById('stamina-bar').style.width = stats.stamina + '%';
-
-                if(stats.hp <= 0) { alert("Вы погибли!"); location.reload(); }
+                
+                // Настройки в реальном времени
+                fog.far = document.getElementById('fogRange').value;
             }
             renderer.render(scene, camera);
         }
-        
-        camera.position.y = 1.6;
-        animate();
 
+        camera.position.y = 1.6;
+        update();
+
+        // Фикс ресайза
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
+
     </script>
 </body>
 </html>
