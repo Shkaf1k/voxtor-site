@@ -1,14 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Моя страница</title>
+    <title>Моя игра на GitHub</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; }
-        h1 { color: #2ecc71; }
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #222; color: white; font-family: sans-serif; overflow: hidden; }
+        canvas { border: 4px solid #555; background: #333; }
+        .info { position: absolute; top: 10px; }
     </style>
 </head>
 <body>
-    <h1>Привет! Мой сайт на GitHub работает! 🚀</h1>
-    <p>Это только начало.</p>
+    <div class="info">Используй стрелки или WASD, чтобы ходить</div>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Настройки игрока
+        const player = {
+            x: 50,
+            y: 50,
+            size: 30,
+            color: '#2ecc71',
+            speed: 5
+        };
+
+        const keys = {};
+
+        // Отслеживаем нажатия клавиш
+        window.addEventListener('keydown', e => keys[e.code] = true);
+        window.addEventListener('keyup', e => keys[e.code] = false);
+
+        function update() {
+            // Движение
+            if (keys['ArrowUp'] || keys['KeyW']) player.y -= player.speed;
+            if (keys['ArrowDown'] || keys['KeyS']) player.y += player.speed;
+            if (keys['ArrowLeft'] || keys['KeyA']) player.x -= player.speed;
+            if (keys['ArrowRight'] || keys['KeyD']) player.x += player.speed;
+
+            // Ограничение границ
+            if (player.x < 0) player.x = 0;
+            if (player.y < 0) player.y = 0;
+            if (player.x + player.size > canvas.width) player.x = canvas.width - player.size;
+            if (player.y + player.size > canvas.height) player.y = canvas.height - player.size;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Очистка экрана
+            
+            // Рисуем игрока
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.size, player.size);
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+        }
+
+        gameLoop();
+    </script>
 </body>
 </html>
