@@ -2,86 +2,80 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Survival Forest: Ultimate</title>
+    <title>Unturned Web Edition</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #000; font-family: 'Segoe UI', Tahoma, sans-serif; user-select: none; }
+        body { margin: 0; overflow: hidden; background: #87CEEB; font-family: 'Courier New', Courier, monospace; user-select: none; }
         
         /* ГЛАВНОЕ МЕНЮ */
         #main-menu {
             position: absolute; width: 100%; height: 100%; z-index: 200;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80');
-            background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: #4a6d34; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-
         .menu-btn {
-            width: 250px; padding: 15px; margin: 10px; font-size: 20px;
-            background: rgba(255,255,255,0.1); color: white; border: 2px solid #fff;
-            cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px);
+            width: 280px; padding: 20px; margin: 10px; font-size: 24px; font-weight: bold;
+            background: #5e8a42; color: white; border: 4px solid #2e4521;
+            cursor: pointer; transition: 0.1s;
         }
-        .menu-btn:hover { background: #fff; color: #000; }
+        .menu-btn:hover { background: #76ad53; transform: scale(1.05); }
 
-        /* ОКНО НАСТРОЕК */
-        #settings-menu {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.9); padding: 30px; border: 2px solid #fff; color: white;
-            display: none; z-index: 210; min-width: 300px;
-        }
-
-        /* ИНВЕНТАРЬ И КРАФТ */
+        /* HUD UNTURNED STYLE */
+        #hud { position: absolute; bottom: 20px; right: 20px; z-index: 50; color: white; text-align: right; }
+        .stat-box { background: rgba(0,0,0,0.5); padding: 10px; border: 3px solid #000; margin-bottom: 5px; width: 250px; }
+        .bar-bg { width: 100%; height: 12px; background: #333; margin-top: 5px; border: 1px solid #000; }
+        .bar-fill { height: 100%; width: 100%; transition: width 0.2s; }
+        
         #inventory-ui {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 600px; height: 400px; background: rgba(20,20,20,0.95);
-            border: 2px solid #555; display: none; z-index: 150; color: white; padding: 20px;
+            width: 700px; height: 450px; background: #2c2c2c; border: 5px solid #1a1a1a;
+            display: none; z-index: 150; color: white; padding: 20px;
         }
-        .inv-container { display: flex; gap: 20px; }
-        .slots-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; flex: 1; }
-        .craft-list { width: 200px; border-left: 1px solid #444; padding-left: 20px; }
-        .slot { width: 60px; height: 60px; background: #333; border: 1px solid #555; display: flex; justify-content: center; align-items: center; font-size: 24px; position: relative; }
-        .craft-item { background: #444; padding: 10px; margin-bottom: 10px; cursor: pointer; font-size: 14px; border-radius: 4px; }
-        .craft-item:hover { background: #666; }
-
-        /* HUD */
-        .hud { position: absolute; bottom: 20px; left: 20px; z-index: 50; }
-        .bar-wrap { width: 200px; height: 15px; background: #222; margin-top: 5px; border-radius: 10px; overflow: hidden; }
-        .bar { height: 100%; transition: 0.3s; }
-        .crosshair { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; background: white; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; border: 1px solid black;}
+        .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+        .item-slot { width: 80px; height: 80px; background: #444; border: 2px solid #666; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+        
+        .crosshair { 
+            position: absolute; top: 50%; left: 50%; width: 20px; height: 20px; 
+            border: 2px solid rgba(255,255,255,0.8); transform: translate(-50%, -50%); z-index: 10; 
+        }
+        #kill-feed { position: absolute; top: 20px; left: 20px; color: #ff4757; font-weight: bold; font-size: 20px; }
     </style>
 </head>
 <body>
 
+    <div id="kill-feed"></div>
     <div class="crosshair"></div>
 
     <div id="main-menu">
-        <h1 style="color: white; font-size: 60px; text-shadow: 4px 4px 0px #000;">FOREST SURVIVAL</h1>
+        <h1 style="color: white; font-size: 80px; -webkit-text-stroke: 3px #000;">UNTURNED WEB</h1>
         <button class="menu-btn" onclick="startGame()">ИГРАТЬ</button>
         <button class="menu-btn" onclick="toggleSettings(true)">НАСТРОЙКИ</button>
     </div>
 
-    <div id="settings-menu">
-        <h2>НАСТРОЙКИ</h2>
-        <label>Чувствительность: <input type="range" id="sens" min="1" max="10" value="5"></label><br><br>
-        <label>Дальность тумана: <input type="range" id="fogRange" min="10" max="200" value="50"></label><br><br>
-        <button class="menu-btn" style="width: 100%;" onclick="toggleSettings(false)">ЗАКРЫТЬ</button>
-    </div>
-
     <div id="inventory-ui">
-        <h2>ИНВЕНТАРЬ / КРАФТ</h2>
-        <div class="inv-container">
-            <div class="slots-grid" id="inv-slots"></div>
-            <div class="craft-list">
-                <h3>Крафт</h3>
-                <div class="craft-item" onclick="craft('axe')">🪓 Топор (2 Дерева)</div>
-                <div class="craft-item" onclick="craft('wall')">🧱 Стена (3 Дерева)</div>
-                <div class="craft-item" onclick="craft('fire')">🔥 Костер (5 Дерева)</div>
+        <h2 style="border-bottom: 2px solid #5e8a42;">СНАРЯЖЕНИЕ</h2>
+        <div style="display: flex; gap: 30px;">
+            <div class="grid" id="inv-grid">
+                </div>
+            <div style="background: #1a1a1a; padding: 15px; flex: 1;">
+                <h3>КРАФТ</h3>
+                <button onclick="craft('bandage')" style="width:100%; margin-bottom:5px;">Бинт (2 Ткани)</button>
+                <button onclick="craft('base')" style="width:100%;">Стена (5 Дерева)</button>
             </div>
         </div>
-        <p style="font-size: 12px; color: #888;">Нажми 'I', чтобы выйти</p>
+        <p>Нажми 'I' чтобы закрыть</p>
     </div>
 
-    <div class="hud">
-        HP <div class="bar-wrap"><div id="hp-bar" class="bar" style="background: #ff4757; width: 100%;"></div></div>
-        ЕДА <div class="bar-wrap"><div id="food-bar" class="bar" style="background: #ffa502; width: 100%;"></div></div>
-        ЭНЕРГИЯ <div class="bar-wrap"><div id="stamina-bar" class="bar" style="background: #1e90ff; width: 100%;"></div></div>
+    <div id="hud">
+        <div class="stat-box">
+            ЗДОРОВЬЕ
+            <div class="bar-bg"><div id="hp-bar" class="bar-fill" style="background: #ff4757;"></div></div>
+        </div>
+        <div class="stat-box">
+            СЫТОСТЬ
+            <div class="bar-bg"><div id="food-bar" class="bar-fill" style="background: #ffa502;"></div></div>
+        </div>
+        <div class="stat-box">
+            ОПЫТ: <span id="xp-val">0</span>
+        </div>
     </div>
 
     <script type="importmap">
@@ -92,139 +86,174 @@
         import * as THREE from 'three';
         import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 
-        // --- ИНИЦИАЛИЗАЦИЯ ---
+        // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
+        let gameActive = false;
+        let stats = { hp: 100, food: 100, xp: 0 };
+        let inventory = ["🪓", "🔫"];
+        let zombies = [];
+        const objects = [];
+
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x87CEEB);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: false }); // Отключаем сглаживание для стиля Unturned
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
         document.body.appendChild(renderer.domElement);
 
-        const fog = new THREE.Fog(0x87CEEB, 1, 50);
-        scene.fog = fog;
-
-        const light = new THREE.DirectionalLight(0xffffff, 1.2);
-        light.position.set(10, 20, 10);
-        light.castShadow = true;
-        scene.add(light, new THREE.AmbientLight(0xffffff, 0.4));
-
-        // --- ИГРОВЫЕ ДАННЫЕ ---
-        let gameActive = false;
-        let stats = { hp: 100, food: 100, stamina: 100 };
-        let inv = { "🪵": 0, "🍎": 0, "🪓": 0 };
         const controls = new PointerLockControls(camera, document.body);
 
+        // --- МОДЕЛЬ РУК (ОРУЖИЕ) ---
+        const gunGroup = new THREE.Group();
+        const hand = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.5), new THREE.MeshStandardMaterial({color: 0xdbac82}));
+        const pistol = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.25, 0.4), new THREE.MeshStandardMaterial({color: 0x333333}));
+        pistol.position.set(0.2, -0.2, -0.5);
+        hand.position.set(0.2, -0.2, -0.3);
+        gunGroup.add(hand, pistol);
+        camera.add(gunGroup);
+        scene.add(camera);
+
         // --- МИР ---
-        const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: 0x3d5e2f }));
+        // Земля
+        const ground = new THREE.Mesh(new THREE.PlaneGeometry(500, 500), new THREE.MeshStandardMaterial({ color: 0x4a6d34 }));
         ground.rotation.x = -Math.PI/2; ground.receiveShadow = true;
         scene.add(ground);
 
-        function addTree() {
-            const x = Math.random()*160-80; const z = Math.random()*160-80;
-            const t = new THREE.Group();
-            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 2), new THREE.MeshStandardMaterial({color: 0x4b3621}));
-            const leaves = new THREE.Mesh(new THREE.SphereGeometry(1.2), new THREE.MeshStandardMaterial({color: 0x228b22}));
-            trunk.position.y = 1; leaves.position.y = 2.5;
-            t.add(trunk, leaves); t.position.set(x, 0, z);
-            t.userData = { type: 'tree' };
-            scene.add(t);
+        // Деревья (кубические)
+        function createBlockyTree(x, z) {
+            const tree = new THREE.Group();
+            const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.8, 4, 0.8), new THREE.MeshStandardMaterial({color: 0x4b3621}));
+            const leaves = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshStandardMaterial({color: 0x3a5f25}));
+            trunk.position.y = 2; leaves.position.y = 4.5;
+            tree.add(trunk, leaves); tree.position.set(x, 0, z);
+            scene.add(tree);
         }
-        for(let i=0; i<50; i++) addTree();
+        for(let i=0; i<40; i++) createBlockyTree(Math.random()*200-100, Math.random()*200-100);
 
-        // --- ФУНКЦИИ МЕНЮ ---
+        // --- ЗОМБИ ---
+        function spawnZombie() {
+            const zomb = new THREE.Group();
+            const body = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.8, 0.5), new THREE.MeshStandardMaterial({color: 0x455a3f}));
+            const head = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.6, 0.6), new THREE.MeshStandardMaterial({color: 0x7a9c6d}));
+            head.position.y = 1.2;
+            zomb.add(body, head);
+            zomb.position.set(Math.random()*100-50, 0.9, Math.random()*100-50);
+            scene.add(zomb);
+            zombies.push({ mesh: zomb, hp: 100 });
+        }
+        for(let i=0; i<10; i++) spawnZombie();
+
+        // --- УПРАВЛЕНИЕ ---
         window.startGame = () => {
             document.getElementById('main-menu').style.display = 'none';
             controls.lock();
             gameActive = true;
         };
 
-        window.toggleSettings = (show) => {
-            document.getElementById('settings-menu').style.display = show ? 'block' : 'none';
-        };
-
-        // --- УПРАВЛЕНИЕ И ИНВЕНТАРЬ ---
         const keys = {};
         document.addEventListener('keydown', (e) => {
             keys[e.code] = true;
-            if(e.code === 'KeyI' && gameActive) {
-                const ui = document.getElementById('inventory-ui');
-                if(ui.style.display === 'block') {
-                    ui.style.display = 'none'; controls.lock();
-                } else {
-                    ui.style.display = 'block'; controls.unlock();
-                    renderInv();
-                }
-            }
-            if(e.code === 'KeyE' && gameActive) collect();
+            if(e.code === 'KeyI' && gameActive) toggleInv();
         });
         document.addEventListener('keyup', (e) => keys[e.code] = false);
 
-        function collect() {
-            // Простейшая проверка на добычу дерева (если рядом)
-            inv["🪵"] += 1;
-            renderInv();
-        }
-
-        window.craft = (item) => {
-            if(item === 'axe' && inv["🪵"] >= 2) { inv["🪵"] -= 2; inv["🪓"] += 1; }
-            if(item === 'wall' && inv["🪵"] >= 3) { inv["🪵"] -= 3; placeWall(); }
-            renderInv();
-        };
-
-        function renderInv() {
-            const grid = document.getElementById('inv-slots');
-            grid.innerHTML = '';
-            for(let key in inv) {
-                if(inv[key] > 0) {
-                    grid.innerHTML += `<div class="slot">${key} <span style="font-size:12px; position:absolute; bottom:2px; right:2px;">${inv[key]}</span></div>`;
-                }
+        function toggleInv() {
+            const ui = document.getElementById('inventory-ui');
+            if(ui.style.display === 'block') {
+                ui.style.display = 'none'; controls.lock();
+            } else {
+                ui.style.display = 'block'; controls.unlock();
+                renderInv();
             }
         }
 
-        function placeWall() {
-            const wall = new THREE.Mesh(new THREE.BoxGeometry(3, 2, 0.3), new THREE.MeshStandardMaterial({color: 0x5d4037}));
-            const dir = new THREE.Vector3(); camera.getWorldDirection(dir);
-            wall.position.addVectors(camera.position, dir.multiplyScalar(3));
-            wall.position.y = 1;
-            wall.rotation.y = camera.rotation.y;
-            scene.add(wall);
+        function renderInv() {
+            const grid = document.getElementById('inv-grid');
+            grid.innerHTML = '';
+            inventory.forEach(item => {
+                grid.innerHTML += `<div class="item-slot">${item}</div>`;
+            });
         }
 
-        // --- ОСНОВНОЙ ЦИКЛ ---
-        function update() {
-            requestAnimationFrame(update);
+        // Стрельба / Удар
+        document.addEventListener('mousedown', () => {
+            if(!controls.isLocked) return;
             
-            if (controls.isLocked && gameActive) {
-                const speed = 0.15;
-                if (keys['KeyW']) controls.moveForward(speed);
-                if (keys['KeyS']) controls.moveForward(-speed);
-                if (keys['KeyA']) controls.moveRight(-speed);
-                if (keys['KeyD']) controls.moveRight(speed);
+            // Анимация отдачи
+            gunGroup.position.z = 0.1;
+            setTimeout(() => gunGroup.position.z = 0, 100);
 
-                // Статы
+            // Проверка попадания
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(new THREE.Vector2(), camera);
+            const intersects = raycaster.intersectObjects(zombies.map(z => z.mesh), true);
+
+            if(intersects.length > 0) {
+                const hitObj = intersects[0].object.parent;
+                const zIndex = zombies.findIndex(z => z.mesh === hitObj);
+                if(zIndex !== -1) {
+                    zombies[zIndex].hp -= 50;
+                    if(zombies[zIndex].hp <= 0) {
+                        scene.remove(zombies[zIndex].mesh);
+                        zombies.splice(zIndex, 1);
+                        stats.xp += 20;
+                        document.getElementById('kill-feed').innerText = "ЗОМБИ УБИТ +20 XP";
+                        setTimeout(() => document.getElementById('kill-feed').innerText = "", 2000);
+                        spawnZombie();
+                    }
+                }
+            }
+        });
+
+        // --- ЛОГИКА ---
+        function animate() {
+            requestAnimationFrame(animate);
+            if(gameActive && controls.isLocked) {
+                const speed = 0.15;
+                if(keys['KeyW']) controls.moveForward(speed);
+                if(keys['KeyS']) controls.moveForward(-speed);
+                if(keys['KeyA']) controls.moveRight(-speed);
+                if(keys['KeyD']) controls.moveRight(speed);
+
+                // Движение зомби к игроку
+                zombies.forEach(z => {
+                    const dir = new THREE.Vector3().subVectors(camera.position, z.mesh.position).normalize();
+                    z.mesh.position.x += dir.x * 0.04;
+                    z.mesh.position.z += dir.z * 0.04;
+                    z.mesh.lookAt(camera.position.x, 0.9, camera.position.z);
+
+                    // Урон от зомби
+                    if(z.mesh.position.distanceTo(camera.position) < 1.5) {
+                        stats.hp -= 0.1;
+                    }
+                });
+
+                // Покачивание оружия при ходьбе
+                if(keys['KeyW'] || keys['KeyS'] || keys['KeyA'] || keys['KeyD']) {
+                    gunGroup.position.y = -0.05 + Math.sin(Date.now() * 0.01) * 0.02;
+                }
+
                 stats.food -= 0.005;
-                if(stats.food <= 0) stats.hp -= 0.01;
-                
                 document.getElementById('hp-bar').style.width = stats.hp + '%';
                 document.getElementById('food-bar').style.width = stats.food + '%';
-                
-                // Настройки в реальном времени
-                fog.far = document.getElementById('fogRange').value;
+                document.getElementById('xp-val').innerText = stats.xp;
+
+                if(stats.hp <= 0) {
+                    alert("ВЫ ПОГИБЛИ! ОПЫТ: " + stats.xp);
+                    location.reload();
+                }
             }
             renderer.render(scene, camera);
         }
 
         camera.position.y = 1.6;
-        update();
+        animate();
 
-        // Фикс ресайза
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
-
     </script>
 </body>
 </html>
